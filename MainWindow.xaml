@@ -70,79 +70,34 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="MenuColumn" Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
+        <ToggleButton x:Name="toggleButton" Content="Изменить ширину"/>
 
-        <Button x:Name="OpenMenuBtn" Panel.ZIndex="10" Margin="10 10 0 0" Grid.Column="1">
-            <Button.Resources>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToggleMenuButton}">
-                    <Setter Property="Content" Value="𓃑"/>
-                    <Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource ButtonFocusedColor}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Resources>
-        </Button>
-
-        <Button x:Name="CloseMenuBtn" Panel.ZIndex="30" Margin="10 10 0 0" ClickMode="Press" >
-            <Button.Style>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToggleMenuButton}">
-                    <Setter Property="Content" Value="❌"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource CloseButtonColor}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </Trigger>
-                        <DataTrigger Binding="{Binding ElementName=OpenMenuBtn, Path=IsFocused}" Value="True">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
-
-        <Grid x:Name="MenuGrid" Panel.ZIndex="20" Width="250" HorizontalAlignment="Left">
-            <Grid.Triggers>
-                <EventTrigger RoutedEvent="Button.Click" SourceName="CloseMenuBtn" >
-                    <EventTrigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="MenuGrid"
-                                                            Storyboard.TargetProperty="(Grid.Width)"
-                                                            Duration="0:0:5" From="250" To="0" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger.EnterActions>
-                </EventTrigger>
-            </Grid.Triggers>
-            <Border Name="MenuBorder" BorderBrush="DarkGray" BorderThickness="0 0 1 0">
-                <Grid Background="#221834">
-                    <StackPanel x:Name="MenuItemsStackPanel" Orientation="Vertical" Margin="0 75 0 0">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MenuButton}"/>
-                        </StackPanel.Resources>
-                        <Button Content="First menu item"/>
-                        <Button Content="Second menu item"/>
-                        <Button Content="Third menu item"/>
-                        <Button Content="Fourth menu item"/>
-                        <Button Content="Fifth menu item is the longest item"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
+        <Grid x:Name="myGrid" Grid.Column="1" Width="200" Background="LightBlue">
+            <!-- Содержимое вашего грида -->
         </Grid>
 
-        <Grid Name="MainGrid" Grid.ColumnSpan="2" Background="#171717" Panel.ZIndex="0">
-        </Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="ToggleButton.Checked" SourceName="toggleButton">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="myGrid" Storyboard.TargetProperty="Width" Duration="0:0:0.3" From="200" To="0">
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="ToggleButton.Unchecked" SourceName="toggleButton">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="myGrid" Storyboard.TargetProperty="Width" Duration="0:0:0.3" From="0" To="200">
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
 
     </Grid>
 
