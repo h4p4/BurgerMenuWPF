@@ -8,51 +8,141 @@
         Title="MainWindow" Height="450" Width="800"
         WindowState="Maximized" Foreground="#e2e2e2"
         FontSize="22" FontFamily="Whitney">
-    <Grid Background="Azure">
+    <Window.Resources>
+        <Style x:Key="CustomButton" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource DarkTextColor}"/>
+                </Trigger>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ButtonFocusedColor}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource DarkTextColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="MenuButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center"
+                                       TextWrapping="Wrap" Width="Auto" Margin="20"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ToggleMenuButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="50" Width="Auto">
+                            <TextBlock Text="{TemplateBinding Content}" TextAlignment="Center" Margin="10"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource DarkTextColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition x:Name="MenuColumn" Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Name="MainGrid" Grid.ColumnSpan="2" Background="#171717">
+
+
+        <Button x:Name="OpenMenuBtn" Panel.ZIndex="10" Margin="10 10 0 0" Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToggleMenuButton}">
+                    <Setter Property="Content" Value="𓃑"/>
+                    <Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource ButtonFocusedColor}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button x:Name="CloseMenuBtn" Panel.ZIndex="30" Margin="10 10 0 0" ClickMode="Press" >
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ToggleMenuButton}">
+                    <Setter Property="Content" Value="❌"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource CloseButtonColor}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource LightTextColor}"/>
+                        </Trigger>
+                        <!--<Trigger Property="IsFocused" Value="True">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </Trigger>-->
+                        <DataTrigger Binding="{Binding ElementName=OpenMenuBtn, Path=IsFocused}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Grid x:Name="MenuGrid" Panel.ZIndex="20" Width="250" HorizontalAlignment="Left">
+            <Border Name="MenuBorder" BorderBrush="DarkGray" BorderThickness="0 0 1 0">
+                <Grid Background="#221834">
+                    <StackPanel x:Name="MenuItemsStackPanel" Orientation="Vertical" Margin="0 75 0 0">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MenuButton}"/>
+                        </StackPanel.Resources>
+                        <Button Content="First menu item"/>
+                        <Button Content="Second menu item"/>
+                        <Button Content="Third menu item"/>
+                        <Button Content="Fourth menu item"/>
+                        <Button Content="Fifth menu item is the longest item"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
-        <Border Name="MenuBorder" BorderBrush="DarkGray" BorderThickness="0 0 1 0">
-            <Grid Name="MenuGrid" Background="#221834">
-                <StackPanel x:Name="MenuItemsStackPanel" Orientation="Vertical">
-                    <StackPanel.Resources>
-                        <Style x:Name="MenuItem" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="BorderThickness" Value="0"/>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                            <Setter Property="Foreground" Value="#e2e2e2"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="{TemplateBinding Background}">
-                                            <TextBlock Text="{TemplateBinding Content}" 
-                                                       TextWrapping="Wrap" TextAlignment="Center" Width="Auto" Margin="20"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#7451b2"/>
-                                    <Setter Property="Foreground" Value="#171717"/>
-                                </Trigger>
-                                <Trigger Property="IsFocused" Value="True">
-                                    <Setter Property="Background" Value="#a775ff"/>
-                                    <Setter Property="Foreground" Value="#171717"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Resources>
-                    <Button Content="First menu item"/>
-                    <Button Content="Second menu item"/>
-                    <Button Content="Third menu item"/>
-                    <Button Content="Fourth menu item"/>
-                    <Button Content="Fifth menu item is the longest item"/>
-                </StackPanel>
-            </Grid>
-        </Border>
+
+        <Grid Name="MainGrid" Grid.ColumnSpan="2" Background="#171717" Panel.ZIndex="0">
+        </Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Button.Click" SourceName="CloseMenuBtn" >
+                <EventTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="MenuGrid"
+                                                        Storyboard.TargetProperty="(Grid.Width)"
+                                                        Duration="0:0:5" From="250" To="0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.EnterActions>
+            </EventTrigger>
+        </Grid.Triggers>
     </Grid>
+
 </Window>

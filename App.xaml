@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:burger_wpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="CloseButtonColor" Color="#8d0914"/>
+        <SolidColorBrush x:Key="ButtonMouseOverColor" Color="#7451b2"/>
+        <SolidColorBrush x:Key="ButtonFocusedColor" Color="#a775ff"/>
+        <SolidColorBrush x:Key="LightTextColor" Color="#e2e2e2"/>
+        <SolidColorBrush x:Key="DarkTextColor" Color="#171717"/>
+        <TextBlock x:Key="ToggleMenuButtonContent" Text=""/>
+        
+        
     </Application.Resources>
 </Application>
